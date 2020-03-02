@@ -59,19 +59,30 @@ Timetable.prototype.getTable = function (tableUrl) {
         //each day's sessions is on it's own <tr>
         //<th> contains the name of the day of the row
         //<td> contains individual lesson sessions
-        var day = $('tr').each( (i, element) => {
+        $('tr').each( (i, element) => {
             //skip the first row with time headings
             if( i != 0 ){
                 let dayText = $(element).find('th').text()
                 
+                var lessons = $(element).find('td')
+
+                //trying to add an orphan session to the previous day
+                //for lessons that overlap
+                //if row has no header for day
+                if( dayText == '' ){
+                    daySess = this.sessions[i -2]
+                    daySess.setVenueTime(lessons)
+
+                } 
+                else {
                 var daySess = new IDaySession()
                 daySess.setDay(dayText)
-
-                var lessons = $(element).find('td')
+                
                 daySess.setVenueTime(lessons)
-                //console.log(daySess)
+
                 if(daySess.venue_time.length != 0 )
                     this.sessions.push(daySess)
+                }
             }
         })
     })

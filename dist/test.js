@@ -15,6 +15,9 @@ function getApi() {
 
 function getTimetable() {
     courseId = 'CS335';
+
+    courseId = document.getElementById('courseId').value;
+
     axios.post(url + '/api/course/' + courseId).then(function (response) {
         console.log(response);
     }).catch(function (error) {

@@ -75,18 +75,27 @@ Timetable.prototype.getTable = function (tableUrl) {
         //each day's sessions is on it's own <tr>
         //<th> contains the name of the day of the row
         //<td> contains individual lesson sessions
-        var day = $('tr').each(function (i, element) {
+        $('tr').each(function (i, element) {
             //skip the first row with time headings
             if (i != 0) {
                 var dayText = $(element).find('th').text();
 
-                var daySess = new IDaySession();
-                daySess.setDay(dayText);
-
                 var lessons = $(element).find('td');
-                daySess.setVenueTime(lessons);
-                //console.log(daySess)
-                if (daySess.venue_time.length != 0) _this.sessions.push(daySess);
+
+                //trying to add an orphan session to the previous day
+                //for lessons that overlap
+                //if row has no header for day
+                if (dayText == '') {
+                    daySess = _this.sessions[i - 2];
+                    daySess.setVenueTime(lessons);
+                } else {
+                    var daySess = new IDaySession();
+                    daySess.setDay(dayText);
+
+                    daySess.setVenueTime(lessons);
+
+                    if (daySess.venue_time.length != 0) _this.sessions.push(daySess);
+                }
             }
         });
     });
