@@ -4,11 +4,6 @@ import cors from 'cors'
 
 import apiRoutes from './routes/api.routes'
 
-// const express = require('express')
-// const bodyParser = require('body-parser')
-// const cors = require('cors')
-// const apiRoutes = require('./routes/api.routes')
-
 const app = express()
 
 app.use(bodyParser.json())
