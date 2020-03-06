@@ -3,6 +3,8 @@ import axios from 'axios'
 import config from './../../config/config'
 
 const BASE_URL = config.timetable_url
+const COURSE_LIST_PATH = config.course_list_path
+
 var $ = null
 
 function Timetable() {
@@ -12,9 +14,8 @@ function Timetable() {
 
 Timetable.prototype.findCourse = function (courseId) {
     var timetable = this
-    console.log("find course proto")
 
-    axios.get(BASE_URL + 'list.html').then((response) => {
+    axios.get(BASE_URL + COURSE_LIST_PATH).then((response) => {
         $ = cheerio.load(response.data)
         
         let courses;
@@ -34,7 +35,6 @@ Timetable.prototype.findCourse = function (courseId) {
         //loops through the courses list to find match for give courseId
         $(courses).each( (i, element) => {
             if ( $(courses[i]).text() == '\n' + courseId + '\n'){
-                console.log('found the course!!')
                 timetable.course = courseId
 
                 //sends url of the table page for the courseId
@@ -43,15 +43,12 @@ Timetable.prototype.findCourse = function (courseId) {
                 return false
             }
         })
-
-
     }).catch((error) => {
         console.log(error)
     })
 }
 
 Timetable.prototype.getTable = function (tableUrl) {
-    console.log(tableUrl)
 
     axios.get(BASE_URL + tableUrl).then((response) => {
         $ = cheerio.load(response.data)
@@ -70,7 +67,7 @@ Timetable.prototype.getTable = function (tableUrl) {
                 //for lessons that overlap
                 //if row has no header for day
                 if( dayText == '' ){
-                    daySess = this.sessions[i -2]
+                    daySess = this.sessions[i - 2]
                     daySess.setVenueTime(lessons)
 
                 } 
@@ -85,6 +82,8 @@ Timetable.prototype.getTable = function (tableUrl) {
                 }
             }
         })
+    }).catch( (error) => {
+        console.log(error)
     })
 }
 
@@ -155,4 +154,6 @@ SessionTime.prototype.setHoursMin = function(time){
     this.hours = time.split(':')[0]
     this.minutes = time.split(':')[1]
 }
+
+
 export default Timetable

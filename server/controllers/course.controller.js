@@ -1,13 +1,13 @@
 import Timetable from './../models/timetable.model'
 
 const courseByID = async (req, res, next, id) => {
-    console.log(id)
 
     var timetable = new Timetable()
 
     let promise = new Promise((resolve, reject) => {
         timetable.findCourse(id)
         
+        //UDSM website takes long to respond
         setTimeout( () => {
             resolve()
         }, 5000)
@@ -24,12 +24,9 @@ const courseByID = async (req, res, next, id) => {
     
 }
 
-const read = (req, res) => {
-    console.log(req.timetable)
+const read = async (req, res) => {
 
     return res.json(req.timetable)
-    //console.log(req.timetable.sessions[0].venue_time[0].from.hours)
-
 }
 
 

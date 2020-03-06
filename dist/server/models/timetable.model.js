@@ -19,6 +19,8 @@ var _config2 = _interopRequireDefault(_config);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var BASE_URL = _config2.default.timetable_url;
+var COURSE_LIST_PATH = _config2.default.course_list_path;
+
 var $ = null;
 
 function Timetable() {
@@ -28,9 +30,8 @@ function Timetable() {
 
 Timetable.prototype.findCourse = function (courseId) {
     var timetable = this;
-    console.log("find course proto");
 
-    _axios2.default.get(BASE_URL + 'list.html').then(function (response) {
+    _axios2.default.get(BASE_URL + COURSE_LIST_PATH).then(function (response) {
         $ = _cheerio2.default.load(response.data);
 
         var courses = void 0;
@@ -50,7 +51,6 @@ Timetable.prototype.findCourse = function (courseId) {
         //loops through the courses list to find match for give courseId
         $(courses).each(function (i, element) {
             if ($(courses[i]).text() == '\n' + courseId + '\n') {
-                console.log('found the course!!');
                 timetable.course = courseId;
 
                 //sends url of the table page for the courseId
@@ -66,8 +66,6 @@ Timetable.prototype.findCourse = function (courseId) {
 
 Timetable.prototype.getTable = function (tableUrl) {
     var _this = this;
-
-    console.log(tableUrl);
 
     _axios2.default.get(BASE_URL + tableUrl).then(function (response) {
         $ = _cheerio2.default.load(response.data);
@@ -98,6 +96,8 @@ Timetable.prototype.getTable = function (tableUrl) {
                 }
             }
         });
+    }).catch(function (error) {
+        console.log(error);
     });
 };
 
@@ -167,4 +167,5 @@ SessionTime.prototype.setHoursMin = function (time) {
     this.hours = time.split(':')[0];
     this.minutes = time.split(':')[1];
 };
+
 exports.default = Timetable;
