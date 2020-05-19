@@ -2,19 +2,19 @@
 
 Gets session details for a course from the UDSM timetable website
 
-<h2>Setup</h2>
-<h3>Install</h3>
-$ npm install
+## Installation
+1. Clone this repo.
+2. Run `npm install` to install dependencies.
+3. Run `npm run development` to start the server  
 
-<h3>Run the app</h3>
-$ npm run development 
+Access api's at http://localhost:3001/
 
-<h3>REST API</h3>
+## REST API
 Get timetable for a course
-<h4>Request</h4>
-GET /api/course/courseID
+### Request
+GET /api/course/:courseID
 
-$ curl -i -H  'Accept: application/json'  http://localhost:3001/api/course/CS335
+`$ curl -i -H  'Accept: application/json'  http://localhost:3001/api/course/CS335`
 
 
                
